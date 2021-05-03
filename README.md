@@ -4,6 +4,7 @@ Cloud Computing project 2021
 
 ## Implementation
 
+![Architecture](https://github.com/vvalerio-priv/cloud-computing-project/raw/main/documentation/RendezvousArchitecture.png)
 
 
 ## Project Proposal: Rendezvous
