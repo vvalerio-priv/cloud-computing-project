@@ -1,0 +1,94 @@
+# Use root/example as user/password credentials
+version: '3.7'
+
+services:
+
+  auth-db:
+    container_name: auth-db
+    image: valeriovinciarelli/rendezvous-auth-database:0.1.1
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    networks:
+      - rendezvous
+  
+  auth-ms:
+    container_name: auth-ms
+    image: valeriovinciarelli/rendezvous-auth:0.1.1
+    restart: always
+    environment:
+      DBHOST: auth-db
+      DBSCHEMA: rendezvous-auth
+    ports:
+      - 5001:5000
+    networks:
+      - rendezvous
+  
+  roomrouter-db:
+    container_name: roomrouter-db
+    image: valeriovinciarelli/rendezvous-roomrouter-database:0.1.1
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    networks:
+      - rendezvous
+
+  roomrouter-ms:
+    container_name: roomrouter-ms
+    image: valeriovinciarelli/rendezvous-roomrouter:0.1.1
+    restart: always
+    environment:
+      DBHOST: roomrouter-db
+      DBSCHEMA: rendezvous-roomrouter
+    ports:
+      - 5003:5000
+    networks:
+      - rendezvous
+
+  chatroom-db-test:
+    container_name: chatroom-db-test
+    image: valeriovinciarelli/rendezvous-chatroom-database:0.1.1
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - "./messages-database:/docker-entrypoint-initdb.d"
+    networks:
+      - rendezvous
+
+  chatroom-ms-test:
+    container_name: chatroom-ms-test
+    image: valeriovinciarelli/rendezvous-chatroom:0.1.1
+    restart: always
+    environment:
+      DBHOST: chatroom-db-test
+      DBSCHEMA: rendezvous-chatroom
+    ports:
+      - 5004:5000
+    networks:
+      - rendezvous
+
+  ui-ms:
+    container_name: ui-ms
+    image: valeriovinciarelli/rendezvous-ui:0.1.1
+    restart: always
+    environment:
+      ROOMROUTER-HOST: roomrouter-ms
+      AUTH-HOST: auth-ms
+      CHATROOM-HOST: chatroom-ms-test
+    ports:
+      - 8080:5000
+    networks:
+      - rendezvous
+
+  adminer:
+    container_name: adminer
+    image: adminer
+    restart: always
+    ports:
+      - 8000:8080
+    networks:
+      - rendezvous
+
+networks:
+  rendezvous:

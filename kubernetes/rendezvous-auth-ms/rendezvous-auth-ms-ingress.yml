@@ -1,0 +1,22 @@
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: auth-ms-ingress
+  labels:
+    app: auth-ms
+    version: a
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      rewrite ^(/dashboard)$ $1/ redirect;
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /auth(/|$)(.*)
+        backend:
+          serviceName: auth-ms-service
+          servicePort: 5000

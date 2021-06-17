@@ -1,0 +1,17 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: rendezvous-auth-ms-service
+  labels:
+    app: rendezvous-auth-ms
+    version: a
+spec:
+  selector:
+    app: auth-ms
+    version: a
+  type: NodePort
+  ports:
+  - protocol: TCP
+    port: 5000
+    targetPort: 5000

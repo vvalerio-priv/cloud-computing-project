@@ -1,0 +1,105 @@
+# Use root/example as user/password credentials
+version: '3.7'
+
+services:
+
+  auth-db:
+    container_name: auth-db
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - "./auth-database:/docker-entrypoint-initdb.d"
+    networks:
+      - rendezvous
+  
+  auth-ms:
+    container_name: auth-ms
+    build: ../rendezvous-auth-ms
+    restart: always
+    environment:
+      DBHOST: auth-db
+      DBSCHEMA: rendezvous-auth
+    ports:
+      - 5001:5000
+    networks:
+      - rendezvous
+  
+  roomrouter-db:
+    container_name: roomrouter-db
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - "./roomrouter-database:/docker-entrypoint-initdb.d"
+    networks:
+      - rendezvous
+
+  roomrouter-ms:
+    container_name: roomrouter-ms
+    build: ../rendezvous-roomrouter-ms
+    restart: always
+    environment:
+      DBHOST: roomrouter-db
+      DBSCHEMA: rendezvous-roomrouter
+      DOCKER_HOST: unix://var/run/docker.sock
+      CLOUD_ENV: docker
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 5003:5000
+    networks:
+      - rendezvous
+
+  chatroom-db-test:
+    container_name: chatroom-db-test
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - "./messages-database:/docker-entrypoint-initdb.d"
+    networks:
+      - rendezvous
+
+  chatroom-ms-test:
+    container_name: chatroom-ms-test
+    build: ../rendezvous-chatroom-ms
+    restart: always
+    environment:
+      DBHOST: chatroom-db-test
+      DBSCHEMA: rendezvous-chatroom
+    ports:
+      - 5004:5000
+    networks:
+      - rendezvous
+
+  ui-ms:
+    container_name: ui-ms
+    build: ../rendezvous-ui
+    restart: always
+    environment:
+      ROOMROUTER-HOST: roomrouter-ms
+      AUTH-HOST: auth-ms
+      CHATROOM-HOST: chatroom-ms-test
+    ports:
+      - 8080:5000
+    networks:
+      - rendezvous
+
+  adminer:
+    container_name: adminer
+    image: adminer
+    restart: always
+    ports:
+      - 8000:8080
+    networks:
+      - rendezvous
+
+networks:
+  rendezvous:

@@ -1,0 +1,41 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: auth-ms-deployment
+spec:
+  replicas: 1
+  revisionHistoryLimit: 0
+  selector:
+    matchLabels:
+      app: auth-ms
+      version: a
+  template:
+    metadata:
+      labels:
+        app: auth-ms
+        version: a
+    spec:
+      containers:
+      - name: auth-ms
+        image: valeriovinciarelli/rendezvous-auth-ms:0.0.3 
+        env:
+        - name: DBHOST
+          valueFrom:
+            secretKeyRef:
+              name: rendezvoussecrets
+              key: dbhost
+        imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: 10m
+            memory: 100Mi
+        ports:
+        - containerPort: 5000
+          name: auth-ms-port
+        volumeMounts:
+          - name: auth-ms-pvc-a
+            mountPath: /auth-ms
+      volumes:
+        - name: auth-ms-pvc-a
+          persistentVolumeClaim:
+            claimName: auth-ms-pvc-a
