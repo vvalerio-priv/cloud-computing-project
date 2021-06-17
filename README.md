@@ -12,20 +12,20 @@ Cloud Computing project 2021
 
 Microservices implementation:
 
-- [ ] Rendezvous UI
+- [X] Rendezvous UI
 - [X] Rendezvous Users MS
-- [ ] Rendezvous RoomRouter MS
-- [ ] Rendezvous RoomServer MS
-- [ ] Rendezvous RoomClient MS
+- [X] Rendezvous RoomRouter MS
+- [X] Rendezvous RoomServer MS
+- [X] Rendezvous RoomClient MS
 - [X] Rendezvous Database
 
 Docker implementation:
 
-- [ ] Rendezvous UI
+- [X] Rendezvous UI
 - [X] Rendezvous Users MS
-- [ ] Rendezvous RoomRouter MS
-- [ ] Rendezvous RoomServer MS
-- [ ] Rendezvous RoomClient MS
+- [X] Rendezvous RoomRouter MS
+- [X] Rendezvous RoomServer MS
+- [X] Rendezvous RoomClient MS
 - [X] Rendezvous Database
 
 K8S implementation:
