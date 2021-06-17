@@ -7,6 +7,36 @@ Cloud Computing project 2021
 ![Architecture](https://github.com/vvalerio-priv/cloud-computing-project/raw/main/documentation/RendezvousArchitecture.png)
 
 
+
+## Status
+
+Microservices implementation:
+
+- [ ] Rendezvous UI
+- [X] Rendezvous Users MS
+- [ ] Rendezvous RoomRouter MS
+- [ ] Rendezvous RoomServer MS
+- [ ] Rendezvous RoomClient MS
+- [X] Rendezvous Database
+
+Docker implementation:
+
+- [ ] Rendezvous UI
+- [X] Rendezvous Users MS
+- [ ] Rendezvous RoomRouter MS
+- [ ] Rendezvous RoomServer MS
+- [ ] Rendezvous RoomClient MS
+- [X] Rendezvous Database
+
+K8S implementation:
+
+- [ ] Rendezvous UI
+- [X] Rendezvous Users MS
+- [ ] Rendezvous RoomRouter MS
+- [ ] Rendezvous RoomServer MS
+- [ ] Rendezvous RoomClient MS
+- [X] Rendezvous Database
+
 ## Project Proposal: Rendezvous
 
 **Introduction**
